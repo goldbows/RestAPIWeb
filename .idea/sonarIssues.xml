@@ -18,6 +18,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../BusAPITest/BusClient/README.md">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../BusAPITest/BusClient/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../BusAPITest/BusClient/src/main/java/BusRestClient.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../BusAPIWeb/pom.xml">
           <value>
             <set />
@@ -73,6 +88,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/README.md">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/pom.xml">
           <value>
             <set />
@@ -99,6 +119,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/api/Handler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/api/availability/AvailabilityAPI.java">
           <value>
             <set />
           </value>
@@ -184,6 +209,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/ticket/util/Time.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/data/InMemoryTicketRepositoryTest.java">
           <value>
             <set />
           </value>

@@ -1,32 +1,64 @@
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import api.ticket.TicketResponse;
+import com.google.gson.Gson;
+import data.InMemoryTicketRepository;
+import domain.Ticket;
+import domain.TicketCreationRequestDTO;
+import domain.TicketService;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-@WebServlet(urlPatterns = "/api/createBooking")
+@WebServlet("/api/createBooking")
 public class TicketAPI extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
+    private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp);
-    }
+        InMemoryTicketRepository ticketRepository = new InMemoryTicketRepository();
 
-    @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        super.service(req, res);
+        TicketService ticketService = new TicketService(ticketRepository);
+
+        Gson _gson = new Gson();
+
+        String pathInfo = request.getPathInfo();
+
+        if(pathInfo == null || pathInfo.equals("/")){
+
+            StringBuilder buffer = new StringBuilder();
+            BufferedReader reader = request.getReader();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+
+            String payload = buffer.toString();
+
+            TicketCreationRequestDTO ticketCreationRequestDTO = _gson.fromJson(payload, TicketCreationRequestDTO.class);
+
+            Ticket ticket = null;
+            try {
+                ticket = ticketService.create(ticketCreationRequestDTO);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            TicketResponse ticketResponse = new TicketResponse(ticket);
+
+            String res = _gson.toJson(ticketResponse);
+
+            PrintWriter out = response.getWriter();
+
+            out.print(res);
+            out.flush();
+        }
+        else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 }

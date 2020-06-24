@@ -1,5 +1,5 @@
 import api.availability.AvailabilityResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import data.InMemoryTicketRepository;
 import domain.Availability;
 import domain.AvailabilityRequestDTO;
@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 
 @WebServlet("/api/availability")
 public class AvailabilityAPI extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -23,7 +24,7 @@ public class AvailabilityAPI extends HttpServlet {
 
         TicketService ticketService = new TicketService(ticketRepository);
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        Gson _gson = new Gson();
 
         String pathInfo = request.getPathInfo();
 
@@ -38,34 +39,26 @@ public class AvailabilityAPI extends HttpServlet {
 
             String payload = buffer.toString();
 
-            AvailabilityRequestDTO test = AvailabilityRequestDTO.builder()
-                    .ond("A/B")
-                    .paxCount(3)
-                    .scheduledDateStr("2020/06/26")
-                    .build();
-
-            AvailabilityRequestDTO availabilityRequestDTO;
-            //availabilityRequestDTO = new ObjectMapper().readValue(payload, AvailabilityRequestDTO.class);
+            AvailabilityRequestDTO availabilityRequestDTO = _gson.fromJson(payload, AvailabilityRequestDTO.class);
 
             Availability availability = null;
             try {
-                availability = ticketService.availability(test);
+                availability = ticketService.availability(availabilityRequestDTO);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             AvailabilityResponse availabilityResponse = new AvailabilityResponse(availability);
 
-            //String res = objectMapper.writeValueAsString(availabilityResponse);
+            String res = _gson.toJson(availabilityResponse);
 
             PrintWriter out = response.getWriter();
 
-            //out.print(res);
+            out.print(res);
             out.flush();
         }
         else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
         }
     }
 }
